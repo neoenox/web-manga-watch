@@ -24,7 +24,12 @@ export function findSundayWebryLatestEpisodeUrl(
     })
     .first();
   const href = card.attr("href");
-  return href ? new URL(href, BASE_URL).toString() : null;
+  if (!href) return null;
+  try {
+    return new URL(href, BASE_URL).toString();
+  } catch {
+    return null;
+  }
 }
 
 export function parseSundayWebryPublicMetadata(
