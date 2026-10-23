@@ -26,7 +26,18 @@ export function findSundayWebryLatestEpisodeUrl(
   const href = card.attr("href");
   if (!href) return null;
   try {
-    return new URL(href, BASE_URL).toString();
+    const url = new URL(href, BASE_URL);
+    if (
+      url.protocol !== "https:" ||
+      url.hostname !== "www.sunday-webry.com" ||
+      url.port !== "" ||
+      url.username !== "" ||
+      url.password !== "" ||
+      !/^\\/episode\\/\\d+\\/?$/.test(url.pathname)
+    ) {
+      return null;
+    }
+    return url.toString();
   } catch {
     return null;
   }
