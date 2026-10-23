@@ -21,6 +21,25 @@ describe("Sunday Webry public metadata probe", () => {
     expect(url).toBe("https://www.sunday-webry.com/episode/2551460909779976003");
   });
 
+  it("rejects non-official or unsafe episode links", () => {
+    const candidate = (href: string) =>
+      `<a href="${href}">ふたりバス</a>`;
+
+    for (const href of [
+      "https://example.com/episode/123",
+      "//example.com/episode/123",
+      "http://www.sunday-webry.com/episode/123",
+      "https://www.sunday-webry.com.evil.example/episode/123",
+      "javascript:/episode/123",
+      "https://www.sunday-webry.com/not-an-episode/123",
+    ]) {
+      expect(findSundayWebryLatestEpisodeUrl(candidate(href), "ふたりバス")).toBeNull();
+    }
+    expect(
+      findSundayWebryLatestEpisodeUrl(candidate("/episode/123"), "ふたりバス"),
+    ).toBe("https://www.sunday-webry.com/episode/123");
+  });
+
   it("keeps only public metadata", async () => {
     const metadata = parseSundayWebryPublicMetadata(
       await fixture("normal"),

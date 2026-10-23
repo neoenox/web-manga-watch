@@ -40,8 +40,13 @@ export function probeYanmagaMagazine(
     return { status: "failure", reason: "missing_metadata" };
   }
 
-  const url = new URL(link, "https://magazine.yanmaga.jp/");
-  if (url.hostname !== "comic-days.com") {
+  let url: URL;
+  try {
+    url = new URL(link, "https://magazine.yanmaga.jp/");
+  } catch {
+    return { status: "failure", reason: "missing_metadata" };
+  }
+  if (url.protocol !== "https:" || url.hostname !== "comic-days.com") {
     return { status: "failure", reason: "unexpected_link_host" };
   }
 
