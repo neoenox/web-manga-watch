@@ -33,7 +33,7 @@ export function findSundayWebryLatestEpisodeUrl(
       url.port !== "" ||
       url.username !== "" ||
       url.password !== "" ||
-      !/^\\/episode\\/\\d+\\/?$/.test(url.pathname)
+      !/^\/episode\/\d+\/?$/.test(url.pathname)
     ) {
       return null;
     }
