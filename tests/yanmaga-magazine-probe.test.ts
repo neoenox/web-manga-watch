@@ -42,4 +42,15 @@ describe("Yanmaga Magazine public metadata probe", () => {
       reason: "unexpected_link_host",
     });
   });
+  it("handles malformed episode links without throwing", async () => {
+    const html = (await fixture("home")).replace(
+      "https://comic-days.com/episode/12207421984151793511",
+      "https://[",
+    );
+    expect(probeYanmagaMagazine(html, "妹は知っている")).toEqual({
+      status: "failure",
+      reason: "missing_metadata",
+    });
+  });
+
 });
